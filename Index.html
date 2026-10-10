@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fire &amp; Vine | Grill and Wine, Athlone Circle, Pietermaritzburg</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="logo" href="#home">Fire &amp; Vine</a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#reservation">Reserve</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <h1>Fire &amp; Vine</h1>
+      <p>Flame-grilled food and good wine, made for sharing. Find us at Athlone Circle shopping centre in Pietermaritzburg.</p>
+      <a class="btn btn-ember" href="#reservation">Book a table</a>
+    </section>
+
+    <section class="section" id="about">
+      <h2>About Fire &amp; Vine</h2>
+      <p>Fire &amp; Vine is a relaxed grill and wine restaurant at Athlone Circle shopping centre in Pietermaritzburg. We cook with fresh, preservative-free ingredients from local farms and suppliers, and welcome families, friends and colleagues with friendly service.</p>
+    </section>
+
+    <section class="section" id="menu">
+      <h2>Menu</h2>
+      <p class="intro">Ask your server which wine pairs best with your meal.</p>
+      <div class="menu-grid">
+
+        <article class="menu-category">
+          <img src="images/menu/3-17-1030x1030.png" alt="Grilled halloumi and peri-peri chicken livers served as starters" width="600" height="400" loading="lazy">
+          <h3>Starters</h3>
+          <ul>
+            <li>
+              <div class="item-head"><span>Peri-peri chicken livers</span><span>R75</span></div>
+              <p>Grilled flatbread, lemon, fresh herbs.</p>
+            </li>
+            <li>
+              <div class="item-head"><span>Roasted butternut soup</span><span>R65</span></div>
+              <p>Chilli oil, toasted seeds, warm bread.</p>
+            </li>
+            <li>
+              <div class="item-head"><span>Grilled halloumi</span><span>R85</span></div>
+              <p>Local honey, thyme, charred tomato.</p>
+            </li>
+          </ul>
+        </article>
+
+        <article class="menu-category">
+          <img src="images/1678---Ribeye-Steak-Peppercorn-Sauce-Fries--Haricots-Verts-4123-1573857549246.jpg" alt="Flame-grilled rump steak with chips" width="600" height="400" loading="lazy">
+          <h3>Mains</h3>
+          <ul>
+            <li>
+              <div class="item-head"><span>Flame-grilled rump</span><span>R185</span></div>
+              <p>300g, chips, peppercorn or mushroom sauce.</p>
+            </li>
+            <li>
+              <div class="item-head"><span>Chicken espetada</span><span>R150</span></div>
+              <p>Skewered over the coals, garlic butter, rice.</p>
+            </li>
+            <li>
+              <div class="item-head"><span>Slow-braised lamb curry</span><span>R170</span></div>
+              <p>Fragrant spices, sambals, basmati rice.</p>
+            </li>
+            <li>
+              <div class="item-head"><span>Mushroom and spinach risotto</span><span>R140</span></div>
+              <p>Aged parmesan, crispy sage. Vegetarian.</p>
+            </li>
+          </ul>
+        </article>
+
+        <article class="menu-category">
+          <img src="images/Malva-Pudding-with-Custard-Sauce--500x500.png" alt="Malva pudding with custard" width="600" height="400" loading="lazy">
+          <h3>Desserts</h3>
+          <ul>
+            <li>
+              <div class="item-head"><span>Malva pudding</span><span>R65</span></div>
+              <p>Warm apricot sauce, vanilla custard.</p>
+            </li>
+            <li>
+              <div class="item-head"><span>Dark chocolate fondant</span><span>R70</span></div>
+              <p>Salted caramel, vanilla ice cream.</p>
+            </li>
+            <li>
+              <div class="item-head"><span>Berry cheesecake</span><span>R70</span></div>
+              <p>Baked, with a red wine berry compote.</p>
+            </li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="section reservation" id="reservation">
+      <h2>Reserve a table</h2>
+      <p class="intro">Tell us when you are coming and we will hold your table for 15 minutes.</p>
+      <form class="reservation-form" action="#" method="post">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+        <div class="field">
+          <label for="time">Time</label>
+          <input type="time" id="time" name="time" required>
+        </div>
+        <div class="field">
+          <label for="guests">Number of guests</label>
+          <input type="number" id="guests" name="guests" min="1" max="12" value="2" required>
+        </div>
+        <button class="btn btn-wine" type="submit">Reserve my table</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="visit">
+    <div class="footer-grid">
+      <div>
+        <h2>Opening hours</h2>
+        <ul>
+          <li>Mon to Thu: 11:00 to 21:30</li>
+          <li>Fri and Sat: 11:00 to 22:30</li>
+          <li>Sun: 10:00 to 16:00</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Find us</h2>
+        <address>
+          Athlone Circle Shopping Centre<br>
+          Pietermaritzburg<br>
+          KwaZulu-Natal
+        </address>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <p>hello@fireandvine.example<br>033 000 0000</p>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2026 Fire &amp; Vine. Student project.</p>
+  </footer>
+
+</body>
+</html>

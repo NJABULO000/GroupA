@@ -1,0 +1,220 @@
+/* ===== 1. Variables and reset ===== */
+:root {
+  --color-ink: #231b1a;      /* charcoal from the grill: text, header, footer */
+  --color-paper: #ebe8e1;    /* page background */
+  --color-wine: #6d1f35;     /* the vine: headings and buttons on light areas */
+  --color-wine-deep: #3a1220;/* hero background */
+  --color-ember: #e5702f;    /* the fire: button and highlights on dark areas */
+  --color-muted: #5b5250;    /* secondary text */
+  --color-line: #cfc8bd;     /* borders */
+  --font-heading: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --max-width: 1100px;
+}
+
+/* Global box-sizing: padding and border count inside the width */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+ul { list-style: none; margin: 0; padding: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--color-ember); outline-offset: 3px; }
+
+/* ===== 2. Header (Flexbox) ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
+.nav-links a { text-decoration: none; }
+.nav-links a:hover { text-decoration: underline; text-decoration-color: var(--color-ember); }
+
+/* ===== 3. Hero ===== */
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 70vh;
+  padding: 3rem 1.25rem;
+  background: linear-gradient(160deg, var(--color-ink) 0%, var(--color-wine-deep) 100%);
+  color: var(--color-paper);
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 12vw, 6.5rem);
+  margin-bottom: 0.25em;
+}
+
+.hero p {
+  max-width: 42ch;
+  margin: 0 0 1.75rem;
+  font-size: 1.15rem;
+}
+
+/* ===== 4. Shared section layout ===== */
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 4rem 1.25rem;
+  scroll-margin-top: 4rem; /* keeps headings visible under the sticky header */
+}
+
+.section h2 {
+  color: var(--color-wine);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.intro { margin: 0 0 1.5rem; color: var(--color-muted); }
+
+/* ===== 5. Buttons ===== */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  border: 0;
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-ember { background: var(--color-ember); color: var(--color-ink); }
+.btn-wine { background: var(--color-wine); color: var(--color-paper); }
+
+/* ===== 6. About ===== */
+#about p {
+  max-width: 60ch;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* ===== 7. Menu (Grid for categories, Flexbox for each item row) ===== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.5rem 2rem;
+}
+
+.menu-category h3 {
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-wine);
+  font-size: 1.5rem;
+}
+
+.menu-category li {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.item-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 600;
+}
+
+.menu-category p {
+  margin: 0.25rem 0 0;
+  color: var(--color-muted);
+}
+
+/* ===== 8. Reservation form ===== */
+.reservation { border-top: 1px solid var(--color-line); }
+
+.reservation-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: 640px;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.25rem; }
+.field label { font-weight: 600; }
+
+.field input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid var(--color-muted);
+  border-radius: 4px;
+  font: inherit;
+  background: #fff;
+}
+
+.reservation-form .btn { justify-self: start; }
+
+/* ===== 9. Footer (Grid) ===== */
+.site-footer {
+  padding: 3rem 1.25rem 1.5rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.site-footer h2 { font-size: 1.25rem; color: var(--color-ember); }
+.site-footer address { font-style: normal; }
+.site-footer p { margin: 0; }
+
+.copyright {
+  max-width: var(--max-width);
+  margin: 2rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* ===== 10. Larger screens ===== */
+@media (min-width: 700px) {
+  .site-header { padding: 1rem 2.5rem; }
+  .hero { padding: 4rem 2.5rem; }
+  .site-footer { padding: 3rem 2.5rem 1.5rem; }
+  .reservation-form { grid-template-columns: 1fr 1fr; }
+  .reservation-form .btn { grid-column: 1 / -1; }
+}
