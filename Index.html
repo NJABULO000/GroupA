@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fire &amp; Vine | Grill and Wine, Athlone Circle, Pietermaritzburg</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <header class="site-header">
-    <a class="logo" href="#home">Fire &amp; Vine</a>
+    <a class="logo" href="#home">Fire &amp; <span class="logo-vine">Vine</span></a>
     <nav aria-label="Main navigation">
       <ul class="nav-links">
         <li><a href="#about">About</a></li>
@@ -38,7 +38,7 @@
       <div class="menu-grid">
 
         <article class="menu-category">
-          <img src="images/menu/3-17-1030x1030.png" alt="Grilled halloumi and peri-peri chicken livers served as starters" width="600" height="400" loading="lazy"> 
+          <img src="images/menu/3-17-1030x1030.png" alt="Grilled halloumi and peri-peri chicken livers served as starters" width="600" height="400" loading="lazy">
           <h3>Starters</h3>
           <ul>
             <li>
@@ -104,7 +104,7 @@
     <section class="section reservation" id="reservation">
       <h2>Reserve a table</h2>
       <p class="intro">Tell us when you are coming and we will hold your table for 15 minutes.</p>
-      <form class="reservation-form" action="#" method="post">
+      <form class="reservation-form" action="#confirmation" method="get">
         <div class="field">
           <label for="name">Full name</label>
           <input type="text" id="name" name="name" required>
@@ -150,11 +150,19 @@
       </div>
       <div>
         <h2>Contact</h2>
-        <p>hello@fireandvineexample<br>033 000 0000</p>
+        <p>hello@fireandvine.example<br>033 000 0000</p>
       </div>
     </div>
     <p class="copyright">&copy; 2026 Fire &amp; Vine. Student project.</p>
   </footer>
+
+  <div class="popup" id="confirmation" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
+    <div class="popup-box">
+      <h2 id="confirmation-title">Booking received</h2>
+      <p>Thank you! We have received your reservation request and will confirm it by email shortly.</p>
+      <a class="btn btn-wine" href="#menu">Close</a>
+    </div>
+  </div>
 
 </body>
 </html>
