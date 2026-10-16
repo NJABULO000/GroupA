@@ -1,4 +1,9 @@
+import { useState } from 'react'
+import QuantityStepper from './QuantityStepper.jsx'
+
 function MenuCard({ item }) {
+  const [qty, setQty] = useState(1)
+
   return (
     <article className="flex flex-col overflow-hidden rounded border border-line bg-white">
       <img
@@ -15,6 +20,10 @@ function MenuCard({ item }) {
           <span>R{item.price}</span>
         </div>
         <p className="text-muted">{item.description}</p>
+        <div className="mt-auto flex items-center justify-between pt-4">
+          <QuantityStepper value={qty} onChange={setQty} />
+          <span className="font-semibold text-wine">R{item.price * qty}</span>
+        </div>
       </div>
     </article>
   )
