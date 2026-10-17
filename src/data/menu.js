@@ -5,7 +5,7 @@ export const menu = [
     category: "starters",
     price: 75,
     description: "Grilled flatbread, lemon, fresh herbs.",
-    image: "/images/starters.jpg",
+    image: "/images/menu/peri-peri-chicken-livers.png",
   },
   {
     id: 2,
@@ -13,7 +13,7 @@ export const menu = [
     category: "starters",
     price: 65,
     description: "Chilli oil, toasted seeds, warm bread.",
-    image: "/images/starters.jpg",
+    image: "/images/menu/roasted-butternut-soup.jpg",
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ export const menu = [
     category: "starters",
     price: 85,
     description: "Local honey, thyme, charred tomato.",
-    image: "/images/starters.jpg",
+    image: "/images/menu/grilled-halloumi.png",
   },
   {
     id: 4,
@@ -29,7 +29,7 @@ export const menu = [
     category: "mains",
     price: 185,
     description: "300g, chips, peppercorn or mushroom sauce.",
-    image: "/images/mains.jpg",
+    image: "/images/menu/flame-grilled-rump.jpg",
   },
   {
     id: 5,
@@ -37,7 +37,7 @@ export const menu = [
     category: "mains",
     price: 150,
     description: "Skewered over the coals, garlic butter, rice.",
-    image: "/images/mains.jpg",
+    image: "/images/menu/Chicken-espetada.jpg",
   },
   {
     id: 6,
@@ -45,7 +45,7 @@ export const menu = [
     category: "mains",
     price: 170,
     description: "Fragrant spices, sambals, basmati rice.",
-    image: "/images/mains.jpg",
+    image: "/images/menu/Slow-braised-lamb-curry.jpg",
   },
   {
     id: 7,
@@ -53,7 +53,7 @@ export const menu = [
     category: "mains",
     price: 140,
     description: "Aged parmesan, crispy sage. Vegetarian.",
-    image: "/images/mains.jpg",
+    image: "/images/menu/mushroom-and-spinach-risotto.png",
   },
   {
     id: 8,
@@ -61,7 +61,7 @@ export const menu = [
     category: "desserts",
     price: 65,
     description: "Warm apricot sauce, vanilla custard.",
-    image: "/images/desserts.jpg",
+    image: "/images/menu/malva-pudding.png",
   },
   {
     id: 9,
@@ -69,7 +69,7 @@ export const menu = [
     category: "desserts",
     price: 70,
     description: "Salted caramel, vanilla ice cream.",
-    image: "/images/desserts.jpg",
+    image: "/images/menu/dark-chocolate-fondant.webp",
   },
   {
     id: 10,
@@ -77,6 +77,6 @@ export const menu = [
     category: "desserts",
     price: 70,
     description: "Baked, with a red wine berry compote.",
-    image: "/images/desserts.jpg",
+    image: "/images/menu/berry-cheesecake.png",
   },
 ]
