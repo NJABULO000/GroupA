@@ -3,6 +3,7 @@ import Hero from './components/Hero.jsx'
 import Menu from './components/Menu.jsx'
 import About from './components/About.jsx'
 import Reservation from './components/Reservation.jsx'
+import Footer from './components/Footer.jsx'
 function App() {
   return (
     <>
@@ -13,6 +14,7 @@ function App() {
         <Menu />
         <Reservation />
       </main>
+      <Footer />
     </>
   )
 }
