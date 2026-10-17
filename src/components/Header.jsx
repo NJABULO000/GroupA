@@ -1,8 +1,8 @@
 function Header() {
   return (
-    <header className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-ink px-5 py-3 text-paper md:px-10 md:py-4">
+    <header className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-wine px-5 py-3 text-paper md:px-10 md:py-4">
       <a href="#home" className="font-heading text-2xl">
-        Fire & <span className="text-wine-deep">Vine</span>
+        Fire & <span className="font-bold text-ember">Vine</span>
       </a>
       <nav aria-label="Main navigation">
         <ul className="flex flex-wrap gap-x-5 gap-y-2">
