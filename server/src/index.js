@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import { toNodeHandler, fromNodeHeaders } from 'better-auth/node'
+import { auth } from './auth.js'
 import menuRouter from './routes/menu.js'
 
 const app = express()
@@ -8,21 +10,34 @@ const PORT = process.env.PORT || 3000
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
 
-// The Better Auth handler goes here in step 7, before express.json()
+// Better Auth must be mounted BEFORE express.json()
+app.all('/api/auth/*splat', toNodeHandler(auth))
+
 app.use(express.json())
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+// Returns the signed-in user, or 401 if there is no valid session
+app.get('/api/me', async (req, res, next) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    })
+    if (!session) return res.status(401).json({ error: 'Not signed in' })
+    res.json(session.user)
+  } catch (err) {
+    next(err)
+  }
+})
+
 app.use('/api/menu', menuRouter)
 
-// Unknown routes
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' })
 })
 
-// Errors from any route end up here
 app.use((err, req, res, next) => {
   console.error(err)
   res.status(500).json({ error: 'Something went wrong' })
