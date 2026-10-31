@@ -31,7 +31,7 @@ function App() {
             onClear={cart.clearCart}
           />
         </section>
-        <Reservation />
+        <Reservation cart={cart} onSignIn={() => setAuthOpen(true)} />
       </main>
       <Footer />
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
