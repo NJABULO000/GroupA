@@ -7,7 +7,8 @@
     "start": "node src/index.js",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "node src/db/seed.js"
+    "db:seed": "node src/db/seed.js",
+    "db:seed-extras": "node src/db/seed-extras.js"
   },
   "dependencies": {
     "better-auth": "^1.7.14",

@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp, boolean, integer, serial } from 'drizzle-orm/pg-core'
-
+import { pgTable, text, timestamp, boolean, integer, serial, date, primaryKey } from 'drizzle-orm/pg-core'
 // ---- Auth tables (used by Better Auth) ----
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -56,3 +56,39 @@ export const menuItems = pgTable('menu_items', {
   description: text('description').notNull(),
   imageUrl: text('image_url'),
 })
+
+// ---- Bookings and extras ----
+export const extras = pgTable('extras', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  category: text('category').notNull(), // which menu category this extra applies to
+  priceCents: integer('price_cents').notNull(),
+})
+
+export const reservations = pgTable('reservations', {
+  id: serial('id').primaryKey(),
+  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  reservationDate: date('reservation_date', { mode: 'string' }).notNull(),
+  startMinutes: integer('start_minutes').notNull(), // minutes after midnight: 12:00 = 720
+  guests: integer('guests').notNull(),
+  totalCents: integer('total_cents').notNull().default(0),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+})
+
+export const reservationItems = pgTable('reservation_items', {
+  id: serial('id').primaryKey(),
+  reservationId: integer('reservation_id').notNull().references(() => reservations.id, { onDelete: 'cascade' }),
+  menuItemId: integer('menu_item_id').notNull().references(() => menuItems.id),
+  quantity: integer('quantity').notNull(),
+  unitPriceCents: integer('unit_price_cents').notNull(), // the price when the order was placed
+})
+
+export const reservationItemExtras = pgTable(
+  'reservation_item_extras',
+  {
+    reservationItemId: integer('reservation_item_id').notNull().references(() => reservationItems.id, { onDelete: 'cascade' }),
+    extraId: integer('extra_id').notNull().references(() => extras.id),
+    priceCents: integer('price_cents').notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.reservationItemId, t.extraId] })],
+)
