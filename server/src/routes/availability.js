@@ -1,7 +1,6 @@
 import { Router } from 'express'
-import { eq } from 'drizzle-orm'
 import { db } from '../db/index.js'
-import { reservations } from '../db/schema.js'
+import { activeBookings } from '../lib/bookings.js'
 import {
   CAPACITY,
   isValidDate,
@@ -27,15 +26,12 @@ router.get('/', async (req, res, next) => {
       return res.status(400).json({ error: 'That date has already passed' })
     }
 
-    const booked = await db
-      .select({ startMinutes: reservations.startMinutes, guests: reservations.guests })
-      .from(reservations)
-      .where(eq(reservations.reservationDate, date))
+    const booked = await activeBookings(db, date)
 
     let starts = slotsForDate(date)
     if (date === today) {
       const now = nowMinutes()
-      starts = starts.filter((start) => start > now) // hide times that have passed
+      starts = starts.filter((start) => start > now)
     }
 
     const slots = starts.map((start) => ({

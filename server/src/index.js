@@ -6,7 +6,7 @@ import { auth } from './auth.js'
 import menuRouter from './routes/menu.js'
 import extrasRouter from './routes/extras.js'
  import availabilityRouter from './routes/availability.js'
- import reservationsRouter from './routes/reservations.js'
+ import checkoutRouter from './routes/checkout.js'
    import { requireAuth } from './middleware/requireAuth.js'
 
 const app = express()
@@ -27,11 +27,11 @@ app.get('/api/health', (req, res) => {
   app.get('/api/me', requireAuth, (req, res) => {
     res.json(req.user)
   })
-  
+
 app.use('/api/menu', menuRouter)
 app.use('/api/extras', extrasRouter)
 app.use('/api/availability', availabilityRouter)
-app.use('/api/reservations', reservationsRouter)
+  app.use('/api/checkout', checkoutRouter)
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' })
