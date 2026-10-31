@@ -10,19 +10,27 @@ const filters = [
 
 function Menu() {
   const [items, setItems] = useState([])
+  const [extras, setExtras] = useState([])
   const [status, setStatus] = useState('loading') // 'loading' | 'ready' | 'error'
   const [filter, setFilter] = useState('all')
 
   useEffect(() => {
     let ignore = false
 
-    async function loadMenu() {
+    async function load() {
       try {
-        const res = await fetch('/api/menu')
-        if (!res.ok) throw new Error('Request failed')
-        const data = await res.json()
+        const [menuRes, extrasRes] = await Promise.all([
+          fetch('/api/menu'),
+          fetch('/api/extras'),
+        ])
+        if (!menuRes.ok || !extrasRes.ok) throw new Error('Request failed')
+        const [menuData, extrasData] = await Promise.all([
+          menuRes.json(),
+          extrasRes.json(),
+        ])
         if (!ignore) {
-          setItems(data)
+          setItems(menuData)
+          setExtras(extrasData)
           setStatus('ready')
         }
       } catch {
@@ -30,7 +38,7 @@ function Menu() {
       }
     }
 
-    loadMenu()
+    load()
     return () => {
       ignore = true
     }
@@ -73,7 +81,11 @@ function Menu() {
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {visibleItems.map((item) => (
-              <MenuCard key={item.id} item={item} />
+              <MenuCard
+                key={item.id}
+                item={item}
+                extras={extras.filter((e) => e.category === item.category)}
+              />
             ))}
           </div>
         </>
