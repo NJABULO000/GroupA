@@ -5,7 +5,8 @@ import { toNodeHandler, fromNodeHeaders } from 'better-auth/node'
 import { auth } from './auth.js'
 import menuRouter from './routes/menu.js'
 import extrasRouter from './routes/extras.js'
-
+ import availabilityRouter from './routes/availability.js'
+ import reservationsRouter from './routes/reservations.js'
 const app = express()
 const PORT = process.env.PORT || 3000
 
@@ -35,6 +36,9 @@ app.get('/api/me', async (req, res, next) => {
 
 app.use('/api/menu', menuRouter)
 app.use('/api/extras', extrasRouter)
+app.use('/api/availability', availabilityRouter)
+app.use('/api/reservations', reservationsRouter)
+
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' })
 })

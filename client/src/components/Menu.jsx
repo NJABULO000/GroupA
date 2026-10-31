@@ -8,7 +8,7 @@ const filters = [
   { value: 'desserts', label: 'Desserts' },
 ]
 
-function Menu() {
+function Menu({ onAdd }) {
   const [items, setItems] = useState([])
   const [extras, setExtras] = useState([])
   const [status, setStatus] = useState('loading') // 'loading' | 'ready' | 'error'
@@ -85,6 +85,7 @@ function Menu() {
                 key={item.id}
                 item={item}
                 extras={extras.filter((e) => e.category === item.category)}
+                onAdd={onAdd}
               />
             ))}
           </div>

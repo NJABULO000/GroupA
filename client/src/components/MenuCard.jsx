@@ -2,7 +2,7 @@ import { useState } from 'react'
 import QuantityStepper from './QuantityStepper.jsx'
 import { formatPrice } from '../lib/format.js'
 
-function MenuCard({ item, extras = [] }) {
+function MenuCard({ item, extras = [], onAdd = () => {} }) {
   const [qty, setQty] = useState(1)
   const [selectedIds, setSelectedIds] = useState([])
 
@@ -12,11 +12,22 @@ function MenuCard({ item, extras = [] }) {
     )
   }
 
-  // Calculated on every render, so it is never stored in state
-  const extrasTotal = extras
-    .filter((e) => selectedIds.includes(e.id))
-    .reduce((sum, e) => sum + e.priceCents, 0)
-  const lineTotal = (item.priceCents + extrasTotal) * qty
+  const chosen = extras.filter((e) => selectedIds.includes(e.id))
+  const unitCents = item.priceCents + chosen.reduce((sum, e) => sum + e.priceCents, 0)
+
+  function handleAdd() {
+    const extraIds = chosen.map((e) => e.id).sort((a, b) => a - b)
+    onAdd({
+      key: `${item.id}:${extraIds.join(',')}`,
+      menuItemId: item.id,
+      name: item.name,
+      quantity: qty,
+      unitCents,
+      extras: chosen.map((e) => ({ id: e.id, name: e.name })),
+    })
+    setQty(1)
+    setSelectedIds([])
+  }
 
   return (
     <article className="flex flex-col overflow-hidden rounded border border-line bg-white">
@@ -59,8 +70,15 @@ function MenuCard({ item, extras = [] }) {
 
         <div className="mt-auto flex items-center justify-between pt-4">
           <QuantityStepper value={qty} onChange={setQty} />
-          <span className="font-semibold text-wine">{formatPrice(lineTotal)}</span>
+          <span className="font-semibold text-wine">{formatPrice(unitCents * qty)}</span>
         </div>
+        <button
+          type="button"
+          onClick={handleAdd}
+          className="mt-3 rounded bg-wine px-4 py-2 font-semibold text-paper hover:brightness-125"
+        >
+          Add to my order
+        </button>
       </div>
     </article>
   )
