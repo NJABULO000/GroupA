@@ -43,6 +43,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong' })
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, (err) => {
+  if (err) {
+    console.error('Failed to start server:', err)
+    process.exit(1)
+  }
   console.log(`Server running on http://localhost:${PORT}`)
 })
