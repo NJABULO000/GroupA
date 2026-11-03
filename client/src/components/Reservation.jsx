@@ -13,11 +13,13 @@ function Reservation({ cart, onSignIn }) {
   const [date, setDate] = useState('')
   const [guestsText, setGuestsText] = useState('2')
   const [startMinutes, setStartMinutes] = useState(null)
-  const [availability, setAvailability] = useState(null) // { date, slots } or { date, error }
+  const [availability, setAvailability] = useState(null) // { date, slots, depositPerGuestCents } or { date, error }
   const [refreshKey, setRefreshKey] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
-  const [confirmation, setConfirmation] = useState(null)
+
+  // Stripe sends people back here with ?cancelled=ID if they leave the payment page
+  const paymentCancelled = new URLSearchParams(window.location.search).has('cancelled')
 
   const guests = Number(guestsText)
   const guestsValid = Number.isInteger(guests) && guests >= 1 && guests <= 25
@@ -34,7 +36,7 @@ function Reservation({ cart, onSignIn }) {
         if (ignore) return
         setAvailability(
           res.ok
-            ? { date, slots: data.slots }
+            ? { date, slots: data.slots, depositPerGuestCents: data.depositPerGuestCents }
             : { date, error: data.error || 'Could not load the times.' },
         )
       } catch {
@@ -53,6 +55,8 @@ function Reservation({ cart, onSignIn }) {
   const loadingSlots = Boolean(date) && !current
   const selectedSlot = current?.slots?.find((s) => s.startMinutes === startMinutes)
   const canBook = Boolean(guestsValid && selectedSlot && selectedSlot.seatsLeft >= guests)
+  const depositCents =
+    guestsValid && current?.depositPerGuestCents ? guests * current.depositPerGuestCents : null
 
   function handleDateChange(event) {
     setDate(event.target.value)
@@ -66,7 +70,7 @@ function Reservation({ cart, onSignIn }) {
     setError('')
     setSubmitting(true)
 
-    // Only ids and quantities are sent. The server works out the prices.
+    // Only ids and quantities are sent. The server works out the deposit and every price.
     const items = cart.lines.map((line) => ({
       menuItemId: line.menuItemId,
       quantity: line.quantity,
@@ -74,31 +78,29 @@ function Reservation({ cart, onSignIn }) {
     }))
 
     try {
-      const res = await fetch('/api/reservations', {
+      const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date, startMinutes, guests, items }),
       })
       const data = await res.json().catch(() => ({}))
 
-      if (res.status === 201) {
-        setConfirmation({ ...data, hadOrder: items.length > 0 })
-        cart.clearCart()
+      if (res.status === 201 && data.url) {
+        // Hand the guest over to Stripe's hosted payment page
+        window.location.assign(data.url)
+        return // stay in the "redirecting" state while the browser leaves
+      }
+
+      setError(data.error || 'Something went wrong. Please try again.')
+      if (res.status === 409) {
+        // Someone else took the seats first: reload the times
         setStartMinutes(null)
         setRefreshKey((k) => k + 1)
-      } else {
-        setError(data.error || 'Something went wrong. Please try again.')
-        if (res.status === 409) {
-          // Someone else took the seats first: reload the times
-          setStartMinutes(null)
-          setRefreshKey((k) => k + 1)
-        }
       }
     } catch {
       setError('Could not reach the server. Please try again.')
-    } finally {
-      setSubmitting(false)
     }
+    setSubmitting(false)
   }
 
   const inputStyle = 'w-full rounded border border-muted bg-white p-3'
@@ -110,9 +112,15 @@ function Reservation({ cart, onSignIn }) {
     >
       <h2 className="mb-2 font-heading text-3xl text-wine md:text-4xl">Reserve a table</h2>
       <p className="mb-6 text-muted">
-        Tables are held for one hour. Add dishes to your pre-order and your food will be
-        ready when you arrive.
+        A small deposit per guest secures your table for one hour. Any food you add to your
+        pre-order is paid at the table.
       </p>
+
+      {paymentCancelled && (
+        <p role="status" className="mb-6 max-w-[640px] rounded border border-line bg-white p-4">
+          Your payment was cancelled, so no booking was made. You can choose a time and try again.
+        </p>
+      )}
 
       {isPending && <p>Loading...</p>}
 
@@ -209,15 +217,29 @@ function Reservation({ cart, onSignIn }) {
             <h3 className="mb-1 font-heading text-lg">Pre-order</h3>
             {cart.count === 0 ? (
               <p className="text-muted">
-                No dishes added yet. Add dishes from the menu if you want your food ready when you arrive.
+                No dishes added yet. Add dishes from the menu if you want your food ready when you arrive. It is paid at the table.
               </p>
             ) : (
               <p>
-                {cart.count} {cart.count === 1 ? 'item' : 'items'}, {formatPrice(cart.totalCents)}.{' '}
+                {cart.count} {cart.count === 1 ? 'item' : 'items'}, {formatPrice(cart.totalCents)}, paid at
+                the table.{' '}
                 <a href="#order" className="text-wine underline">Edit order</a>
               </p>
             )}
           </div>
+
+          {depositCents !== null && (
+            <div className="rounded border border-line bg-white p-4">
+              <h3 className="mb-1 font-heading text-lg">Deposit to pay now</h3>
+              <p>
+                {guests} {guests === 1 ? 'guest' : 'guests'} x {formatPrice(current.depositPerGuestCents)} ={' '}
+                <span className="font-semibold text-wine">{formatPrice(depositCents)}</span>
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                You will pay securely on Stripe's page. Your table is confirmed once the payment goes through.
+              </p>
+            </div>
+          )}
 
           {error && (
             <p role="alert" className="text-wine">{error}</p>
@@ -228,42 +250,9 @@ function Reservation({ cart, onSignIn }) {
             disabled={!canBook || submitting}
             className="justify-self-start rounded bg-wine px-6 py-3 font-semibold text-paper hover:brightness-125 disabled:opacity-60"
           >
-            {submitting ? 'Booking...' : 'Reserve my table'}
+            {submitting ? 'Redirecting to payment...' : 'Pay deposit and book'}
           </button>
         </form>
-      )}
-
-      {confirmation && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="confirmation-title"
-          className="fixed inset-0 z-20 flex items-center justify-center bg-ink/80 p-5"
-        >
-          <div className="w-full max-w-[420px] rounded-lg bg-paper p-8 text-center">
-            <h2 id="confirmation-title" className="mb-2 font-heading text-2xl text-wine">
-              Booking confirmed
-            </h2>
-            <p className="mb-1 font-semibold">Reference #{confirmation.id}</p>
-            <p className="mb-4">
-              {confirmation.date} at {confirmation.time} for {confirmation.guests}{' '}
-              {confirmation.guests === 1 ? 'guest' : 'guests'}.
-            </p>
-            {confirmation.hadOrder && (
-              <p className="mb-4">
-                Your pre-order total is {formatPrice(confirmation.totalCents)}. Your food will
-                be ready when you arrive, and you pay at the table.
-              </p>
-            )}
-            <button
-              type="button"
-              onClick={() => setConfirmation(null)}
-              className="rounded bg-wine px-6 py-3 font-semibold text-paper hover:brightness-125"
-            >
-              Close
-            </button>
-          </div>
-        </div>
       )}
     </section>
   )

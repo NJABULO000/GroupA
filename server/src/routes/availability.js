@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { db } from '../db/index.js'
 import { activeBookings } from '../lib/bookings.js'
+import { DEPOSIT_PER_GUEST_CENTS } from '../lib/stripe.js'
 import {
   CAPACITY,
   isValidDate,
@@ -40,7 +41,7 @@ router.get('/', async (req, res, next) => {
       seatsLeft: seatsLeft(booked, start),
     }))
 
-    res.json({ date, capacity: CAPACITY, slots })
+    res.json({ date, capacity: CAPACITY, depositPerGuestCents: DEPOSIT_PER_GUEST_CENTS, slots })
   } catch (err) {
     next(err)
   }
