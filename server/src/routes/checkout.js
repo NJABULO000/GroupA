@@ -196,7 +196,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         .set({ status: 'cancelled' })
         .where(eq(reservations.id, reservation.id))
       throw new HttpError(502, 'We could not start the payment. Please try again.', {
-        detail: stripeErr.message, // handy while testing; remove before going live
+        
       })
     }
 
