@@ -9,6 +9,7 @@ import extrasRouter from './routes/extras.js'
 import availabilityRouter from './routes/availability.js'
 import checkoutRouter from './routes/checkout.js'
 import { stripeWebhook } from './routes/stripe-webhook.js'
+import ordersRouter from './routes/orders.js'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -36,6 +37,7 @@ app.use('/api/menu', menuRouter)
 app.use('/api/extras', extrasRouter)
 app.use('/api/availability', availabilityRouter)
 app.use('/api/checkout', checkoutRouter)
+app.use('/api/orders', ordersRouter)
 
 // Unknown routes
 app.use((req, res) => {
