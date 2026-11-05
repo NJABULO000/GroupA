@@ -219,4 +219,4 @@ Another useful script in `server`: `npm run db:studio` opens a viewer for the da
 
 ## Author
 
-[Your name], [Group name]
+Njabulo
